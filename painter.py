@@ -66,7 +66,7 @@ class PainterBase():
             print('loading renderer from pre-trained checkpoint...')
             # load the entire checkpoint
             checkpoint = torch.load(os.path.join(self.renderer_checkpoint_dir, 'last_ckpt.pt'),
-                                map_location=None if torch.cuda.is_available() else device)
+                                map_location=None if torch.cuda.is_available() else device,weights_only=False)
             # update net_G states
             self.net_G.load_state_dict(checkpoint['model_G_state_dict'])
             self.net_G.to(device)
@@ -307,6 +307,7 @@ class Painter(PainterBase):
         if self.args.disable_preview:
             pass
         else:
+            pass
             cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
             cv2.namedWindow('input', cv2.WINDOW_NORMAL)
             cv2.imshow('G_pred', vis2[:,:,::-1])
@@ -357,6 +358,7 @@ class ProgressivePainter(PainterBase):
         if self.args.disable_preview:
             pass
         else:
+            pass
             cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
             cv2.namedWindow('input', cv2.WINDOW_NORMAL)
             cv2.imshow('G_pred', vis2[:,:,::-1])
@@ -412,6 +414,7 @@ class NeuralStyleTransfer(PainterBase):
         if self.args.disable_preview:
             pass
         else:
+            pass
             cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
             cv2.namedWindow('input', cv2.WINDOW_NORMAL)
             cv2.namedWindow('style_img', cv2.WINDOW_NORMAL)
