@@ -308,11 +308,11 @@ class Painter(PainterBase):
             pass
         else:
             pass
-            cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('input', cv2.WINDOW_NORMAL)
-            cv2.imshow('G_pred', vis2[:,:,::-1])
-            cv2.imshow('input', self.img_[:, :, ::-1])
-            cv2.waitKey(1)
+            # cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
+            # cv2.namedWindow('input', cv2.WINDOW_NORMAL)
+            # cv2.imshow('G_pred', vis2[:,:,::-1])
+            # cv2.imshow('input', self.img_[:, :, ::-1])
+            # cv2.waitKey(1)
 
 
 
@@ -359,11 +359,11 @@ class ProgressivePainter(PainterBase):
             pass
         else:
             pass
-            cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('input', cv2.WINDOW_NORMAL)
-            cv2.imshow('G_pred', vis2[:,:,::-1])
-            cv2.imshow('input', self.img_[:, :, ::-1])
-            cv2.waitKey(1)
+            # cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
+            # cv2.namedWindow('input', cv2.WINDOW_NORMAL)
+            # cv2.imshow('G_pred', vis2[:,:,::-1])
+            # cv2.imshow('input', self.img_[:, :, ::-1])
+            # cv2.waitKey(1)
 
 
 
@@ -415,13 +415,13 @@ class NeuralStyleTransfer(PainterBase):
             pass
         else:
             pass
-            cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('input', cv2.WINDOW_NORMAL)
-            cv2.namedWindow('style_img', cv2.WINDOW_NORMAL)
-            cv2.imshow('G_pred', vis2[:,:,::-1])
-            cv2.imshow('input', self.img_[:, :, ::-1])
-            cv2.imshow('style_img', self.style_img_[:, :, ::-1])
-            cv2.waitKey(1)
+            # cv2.namedWindow('G_pred', cv2.WINDOW_NORMAL)
+            # cv2.namedWindow('input', cv2.WINDOW_NORMAL)
+            # cv2.namedWindow('style_img', cv2.WINDOW_NORMAL)
+            # cv2.imshow('G_pred', vis2[:,:,::-1])
+            # cv2.imshow('input', self.img_[:, :, ::-1])
+            # cv2.imshow('style_img', self.style_img_[:, :, ::-1])
+            # cv2.waitKey(1)
 
 
     def _backward_x_sty(self):
