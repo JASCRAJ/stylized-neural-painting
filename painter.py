@@ -294,7 +294,7 @@ class Painter(PainterBase):
                          self.net_G.out_size * args.m_grid, 3), np.float32)
         #self.input_aspect_ratio = self.img_.shape[0] / self.img_.shape[1]
         #self.img_ = cv2.resize(self.img_, (self.net_G.out_size * args.m_grid,
-                                           self.net_G.out_size * args.m_grid), cv2.INTER_AREA)
+                                           #self.net_G.out_size * args.m_grid), cv2.INTER_AREA)
 
         self.m_strokes_per_block = int(args.max_m_strokes / (args.m_grid * args.m_grid))
 
