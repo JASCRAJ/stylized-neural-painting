@@ -338,11 +338,33 @@ class ProgressivePainter(PainterBase):
         self.m_grid = 1
 
         self.img_path = args.img_path
-        self.img_ = cv2.imread(args.img_path, cv2.IMREAD_COLOR)
-        self.img_ = cv2.cvtColor(self.img_, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.
+
+        need_blank = (not self.img_path) or (not os.path.isfile(self.img_path))
+        if need_blank:
+            # build an all‑white or all‑black canvas that matches the renderer
+            H = W = self.net_G.out_size * args.max_divide
+            if args.canvas_color == 'white':
+                self.img_ = np.ones((H, W, 3), np.float32)
+            else:
+                self.img_ = np.zeros((H, W, 3), np.float32)
+        else:
+            # normal path: read the photo
+            img_bgr = cv2.imread(self.img_path, cv2.IMREAD_COLOR)
+            if img_bgr is None:
+                raise FileNotFoundError(f"Cannot read image: {self.img_path}")
+            self.img_ = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.
+
+            # resize to target canvas while keeping aspect if user asked for it
+            target_hw = self.net_G.out_size * args.max_divide
+            if args.keep_aspect_ratio:
+                h, w = self.img_.shape[:2]
+                scale = target_hw / max(h, w)
+                self.img_ = cv2.resize(self.img_, (int(w*scale), int(h*scale)), cv2.INTER_AREA)
+            else:
+                self.img_ = cv2.resize(self.img_, (target_hw, target_hw), cv2.INTER_AREA)
+
+        # ------------ common fields that other methods expect -------------
         self.input_aspect_ratio = self.img_.shape[0] / self.img_.shape[1]
-        self.img_ = cv2.resize(self.img_, (self.net_G.out_size * args.max_divide,
-                                           self.net_G.out_size * args.max_divide), cv2.INTER_AREA)
 
 
     def stroke_parser(self):
