@@ -79,7 +79,7 @@ def optimize_x(pt, init_npz=None):
             # use user‑provided strokes for THIS level instead of random
             pt.x = split_views[pt.m_grid-1]       # (1, N_cur, 12)
             # convert to patch tensor that forward_pass expects
-            pt.x = pt._unshuffle_strokes_and_reshape(pt.x)
+            pt.x = pt._reshape_strokes_to_grid(pt.x)
             pt.x_ctt, pt.x_color, pt.x_alpha = \
                 torch.tensor(pt.x[..., :5],   device=device, requires_grad=True), \
                 torch.tensor(pt.x[..., 5:11], device=device, requires_grad=True), \
@@ -114,7 +114,7 @@ def optimize_x(pt, init_npz=None):
         CANVAS_tmp = utils.img2patches(CANVAS_tmp, pt.m_grid+1, pt.net_G.out_size).to(device)
 
     pt._save_stroke_params(PARAMS)
-    pt._render(PARAMS, save_jpgs=True, save_video=True)
+    pt._render(PARAMS, save_jpgs=False, save_video=True)
     print('✓ finished; results in', args.output_dir)
 
 
