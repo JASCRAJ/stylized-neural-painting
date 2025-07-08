@@ -37,7 +37,10 @@ def load_init_npz(path, pt):
     and also the per‑level list used to seed each patch.
     """
     d = np.load(path)
-    v = np.concatenate([d['x_ctt'], d['x_color'], d['x_alpha']], axis=-1)  # (1,N,12)
+    v = np.concatenate([d['x_ctt'], d['x_color'], d['x_alpha']], axis=-1)
+
+    if v.ndim == 2:
+        v = v[np.newaxis, ...]   # adds batch dimension
     assert v.ndim == 3 and v.shape[0] == 1 and v.shape[2] == pt.rderr.d
     PARAMS = v.copy()                       # keep master copy
     # pre‑compute a list of split views: one entry per m_grid level
