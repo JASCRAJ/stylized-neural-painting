@@ -75,16 +75,21 @@ def optimize_x(pt, init_npz=None):
         pt.G_final_pred_canvas = CANVAS_tmp
 
         if init_npz:
-            # ----------------------------------------------------------
-            # use user‑provided strokes for THIS level instead of random
-            pt.x = split_views[pt.m_grid-1]       # (1, N_cur, 12)
-            # convert to patch tensor that forward_pass expects
-            pt.x = pt._reshape_strokes_to_grid(pt.x)
-            pt.x_ctt, pt.x_color, pt.x_alpha = \
-                torch.tensor(pt.x[..., :5],   device=device, requires_grad=True), \
-                torch.tensor(pt.x[..., 5:11], device=device, requires_grad=True), \
-                torch.tensor(pt.x[..., 11:],  device=device, requires_grad=True)
+          
+          v = split_views[pt.m_grid-1]            # slice for this level
+          v = v[0]                                # drop batch dim  → (N,12)
+
+          # reshape to [patch, strokes_per_patch, 12]
+          strokes_per_patch = v.shape[0] // (pt.m_grid * pt.m_grid)
+          v = v.reshape(pt.m_grid * pt.m_grid, strokes_per_patch, pt.rderr.d)
+
+          # assign to painter
+          pt.x = v
+          pt.x_ctt   = torch.tensor(v[..., :5],   device=device, requires_grad=True)
+          pt.x_color = torch.tensor(v[..., 5:11], device=device, requires_grad=True)
+          pt.x_alpha = torch.tensor(v[..., 11:],  device=device, requires_grad=True)
         else:
+          
             # original random initialisation
             pt.initialize_params()
             pt.x_ctt.requires_grad = True
