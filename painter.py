@@ -285,9 +285,18 @@ class Painter(PainterBase):
 
         self.img_path = args.img_path
         if self.img_path and len(self.img_path) > 0:
-            
-            self.img_ = cv2.imread(self.img_path, cv2.IMREAD_COLOR)
+            self.img_ = cv2.imread(args.img_path, cv2.IMREAD_COLOR)
             self.img_ = cv2.cvtColor(self.img_, cv2.COLOR_BGR2RGB).astype(np.float32) / 255.
+            self.input_aspect_ratio = self.img_.shape[0] / self.img_.shape[1]
+            self.img_ = cv2.resize(self.img_, (self.net_G.out_size * args.m_grid,
+                                           self.net_G.out_size * args.m_grid), cv2.INTER_AREA)
+
+            self.m_strokes_per_block = int(args.max_m_strokes / (args.m_grid * args.m_grid))
+
+            self.img_batch = utils.img2patches(self.img_, args.m_grid, self.net_G.out_size).to(device)
+
+            self.final_rendered_images = None
+
         else:
     # no photo given – just create a blank canvas so the rest of the code works
             self.img_ = np.ones((self.net_G.out_size * args.m_grid,
